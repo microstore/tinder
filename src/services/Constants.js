@@ -6,6 +6,7 @@ const Const = {
     USER: ipAdress + 'user/',
     NEW_FRIENDS: ipAdress + 'new-friends',
     FAST_MATCH: ipAdress + 'fast-match',
+    LIKE: ipAdress + 'like/',
 
     //// storage api:
     STORAGE: ipAdress + 'storage/',

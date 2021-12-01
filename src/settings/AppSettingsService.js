@@ -1,5 +1,4 @@
 import React from 'react';
-import CashService from '../services/CashService';
 import Const from '../services/Constants';
 
 //this singleton applies settings at startup:
@@ -30,13 +29,10 @@ class AppSettingsService extends React.Component {
     this.applyClass(document.body, this.bgColors, 'bg-dark');
   }
 
-  persistSetting = (settingName, settingObject) => {
-
+  persistSetting = () => {
   }
 
-  getSetting = (settingName) => {
-    let settings = CashService.getSettings();
-    return settings?.[settingName];
+  getSetting = () => {
   }
 
   applyClass = (element, colors, selectedColor) => {

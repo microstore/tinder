@@ -4,11 +4,8 @@ import ReactTable from "react-table";
 import AjaxService from '../services/AjaxService';
 import CashService from '../services/CashService';
 import Const from '../services/Constants';
-
 import PicWrapper from "../building-blocks/PicWrapper";
-import BtnLink from "../building-blocks/BtnLink";
 import Info from "../building-blocks/Info";
-import FriendRequests from './FriendRequests';
 
 class MoreFriends extends React.Component {
   constructor(props) {
@@ -16,7 +13,8 @@ class MoreFriends extends React.Component {
 
     this.state = {
       beanId: props.beanId,
-      allFr: []
+      allFr: [],
+      isPristine: CashService.isPristine()
     };
     this.friendRequestPicIds = "";
     this.isMountedOk = true;
@@ -31,7 +29,7 @@ class MoreFriends extends React.Component {
     let authToken = CashService.getToken();
 
     let headers = {
-      [Const.AUTH_HEADER_NAME] : authToken
+      [Const.AUTH_HEADER_NAME]: authToken
     }
 
     let promise = AjaxService.doGet(Const.URLS.FAST_MATCH, headers)
@@ -43,8 +41,7 @@ class MoreFriends extends React.Component {
       this.getPeopleNearby(data?.data?.data?.results);
 
     }).catch((e) => {
-      window.alert('The provided token: ' + authToken
-      + ' is invalid.');
+      console.log(authToken);
       console.log(e);
     })
   }
@@ -84,14 +81,15 @@ class MoreFriends extends React.Component {
     this.setState({ allFr: result });
   }
 
-  isLiked = (photos) => {
-    for (let index = 0; index < photos.length; index++) {
-      const pic = photos[index];
-      if (this.friendRequestPicIds.indexOf(pic.id) != -1) {
-        return true
-      }
-    }
-    return false;
+  like = (targetId) => {
+    CashService.setPristine(false);
+    this.setState({ isPristine: false })
+    let promise = AjaxService.doGet(Const.URLS.LIKE + targetId, {});
+    promise.then((data) => {
+      window.alert('Check your tinder and start chatting with the new match. ');
+    }).catch((e) => {
+      console.log(e);
+    })
   }
 
   render() {
@@ -100,6 +98,7 @@ class MoreFriends extends React.Component {
       return (
         <div className="text-justify text-wrap">
           <Info person={person} />
+          <button type="button" hidden={!this.state.isPristine} className="btn btn-success" onClick={() => this.like(person._id)}>Like</button>
         </div>
       )
     }
@@ -107,7 +106,7 @@ class MoreFriends extends React.Component {
     let Pic = args => <PicWrapper photos={args.photos} name={args.name} />
 
     let allFr = this.state.allFr;
-    console.log(allFr);
+
     let persons = allFr.map(one => {
 
       let obj = {
@@ -133,7 +132,10 @@ class MoreFriends extends React.Component {
     ]
 
     return (
-      <div>
+      <div>  
+        <br />
+        Push 'Like' button of a person you like the most. You can have one match per day only, so choose wisely...
+        <br />
         <div>
           <ReactTable className="-striped -highlight"
             data={persons}
@@ -143,7 +145,7 @@ class MoreFriends extends React.Component {
             pageSize={persons.length}
             showPagination={false}
           />
-          <br />
+        
         </div>
       </div>
     )

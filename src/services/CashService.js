@@ -10,6 +10,7 @@ class CashService extends React.Component {
     this[Const.AUTH_HEADER_NAME] = null;
     this.settings = { bgColor: "bg-dark", textColor: "text-white" };
     this.bookmarks = [];
+    this.isPristineVal = true;
     this.cashStructureTemplate = {
       settings: this.settings,
       [Const.AUTH_HEADER_NAME]: { token: this[Const.AUTH_HEADER_NAME] },
@@ -72,36 +73,13 @@ class CashService extends React.Component {
     });
   }
 
-  //// settings:
-  getSettings = () => {
-    return this.settings;
+  isPristine = () => {
+    return this.isPristineVal;
   };
 
-  setSettings = (settings) => {
-    this.settings = settings;
+  setPristine = (isPristine) => {
+    this.isPristineVal = isPristine;
   };
-
-  persistSettings = (settings) => {
-    AjaxService.doPut(Const.URLS.STORAGE_SETTINGS + this.getPhone(), {
-      'json': JSON.stringify(settings)
-    });
-  }
-
-  /// bookmarks:
-  getBookmarks() {
-    return this.bookmarks;
-  }
-
-  setBookmarks(bookmarks) {
-    this.bookmarks = bookmarks;
-  }
-
-  getBookmarksAsObject() {
-    return this.bookmarks.reduce((json, value, key) => {
-      json[value] = key;
-      return json;
-    }, {});
-  }
 
   persistBookmarks = function (arr) {
     let promise = AjaxService.doPost(Const.URLS.STORAGE_BOOKMARKS + this.getPhone(), {
