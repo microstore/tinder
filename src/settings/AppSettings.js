@@ -29,7 +29,7 @@ class AppSettings extends React.Component {
     })
   }
 
-  toggleShowPicsCheckbox = (event) => { 
+  toggleShowPicsCheckbox = (event) => {
     AppSettingsService.isToShowPhotos = event.target.checked;
     this.setState({
       isToShowPhotos: AppSettingsService.isToShowPhotos
@@ -39,8 +39,8 @@ class AppSettings extends React.Component {
   render() {
     return (
       <div>
-        <span className="float-right"> ver: {Const.VERSION}</span> 
-        <p/>
+        <span className="float-right"> ver: {Const.VERSION}</span>
+        <p />
         <SelectPollInterval styles={this.state.styles} onSelectPollInterval={this.onSelectPollInterval} />
         <SelectBackgroundColor styles={this.state.styles} triggerRender={this.triggerRender} />
         <SelectTextColor styles={this.state.styles} triggerRender={this.triggerRender} />

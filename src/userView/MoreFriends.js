@@ -93,12 +93,26 @@ class MoreFriends extends React.Component {
   }
 
   render() {
+    let LikeButton = (args) => {
+      let { person } = args;
+      console.log(person);
+      if (!!person?.name && person.name.length > 0) {
+        return (
+          <div className="text-justify text-wrap">
+            <button type="button" hidden={!this.state.isPristine} className="btn btn-success" onClick={() => this.like(person._id)}>Like</button>
+          </div>
+        )
+      } else
+        return (<label>The person might be too far from your location or you have 'disLiked' 
+          the person before. Please, increase your search radius and try again.</label>)
+    }
+
     let InfoWrapper = (args) => {
       let { person } = args;
       return (
         <div className="text-justify text-wrap">
           <Info person={person} />
-          <button type="button" hidden={!this.state.isPristine} className="btn btn-success" onClick={() => this.like(person._id)}>Like</button>
+          <LikeButton person={person} />
         </div>
       )
     }
@@ -132,7 +146,7 @@ class MoreFriends extends React.Component {
     ]
 
     return (
-      <div>  
+      <div>
         <br />
         Push 'Like' button of a person you like the most. You can have one match per day only, so choose wisely...
         <br />
@@ -145,7 +159,7 @@ class MoreFriends extends React.Component {
             pageSize={persons.length}
             showPagination={false}
           />
-        
+
         </div>
       </div>
     )
